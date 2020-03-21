@@ -12,7 +12,7 @@ data = json.load(open("data.json"))
 valuePassed = 0
 
 #funtion to return translation
-def multipleTrans(word, data,):
+def getMeaning(word, data,):
     index = 1
     result = ""
     for meaning in data[word]:
@@ -24,10 +24,7 @@ def multipleTrans(word, data,):
 def getDefinition(word):
     result = ""
     if word in data:
-        if len(data[word]) > 1:
-            result = multipleTrans(word, data)
-        else:
-            result = "%s: %s" % (word, data[word][0])
+        result = getMeaning(word, data)
 
     elif len(difflib.get_close_matches(word, data.keys())) > 0:
         #get_close_matches will return matches in order of similarity. So obviously, the first word is a possible match
@@ -35,7 +32,7 @@ def getDefinition(word):
         confirm = raw_input("Did you mean %s? Enter Y for yes and N for no:\n" % possible_match)
         
         if confirm.lower() == "y":
-            result =  multipleTrans(possible_match, data)
+            result =  getMeaning()(possible_match, data)
 
         elif confirm.lower() == "n":
             result = "%s doesn't exist in our DB?" % word
