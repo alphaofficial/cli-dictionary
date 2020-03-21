@@ -1,5 +1,9 @@
 """An interactive cli dictionary"""
+
+#modules
 import json
+import difflib
+
 
 #load dict json
 data = json.load(open("data.json"))
@@ -16,7 +20,11 @@ def getDefinition(word):
         else:
             result = data[word]
     else:
-        result = word + " doesn't exist in our DB"
+        #find matches in DB
+        #get_close_matches will return matches in order of similarity. So obviously first word is a possible match
+        possible_match = difflib.get_close_matches(word, data.keys())[0]
+        
+        result = word + " doesn't exist in our DB. Did you mean " + possible_match + "?"
 
     return result
 
