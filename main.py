@@ -4,7 +4,6 @@
 import json
 import difflib
 
-
 #load dict json
 data = json.load(open("data.json"))
 
@@ -16,7 +15,7 @@ def getMeaning(word, data,):
     index = 1
     result = ""
     for meaning in data[word]:
-        result += "%s %s: %s \n" % (word, str(index), meaning)
+        result += "%s %s: %s \n\n" % (word, str(index), meaning)
         index = index + 1
     return result
 
@@ -29,23 +28,32 @@ def getDefinition(word):
     elif len(difflib.get_close_matches(word, data.keys())) > 0:
         #get_close_matches will return matches in order of similarity. So obviously, the first word is a possible match
         possible_match = difflib.get_close_matches(word, data.keys())[0]
-        confirm = raw_input("Did you mean %s? Enter Y for yes and N for no:\n" % possible_match)
+        confirm = raw_input("Did you mean %s? Enter Y for yes and N for no:\n\n" % possible_match)
         
         if confirm.lower() == "y":
-            result =  getMeaning()(possible_match, data)
+            result =  getMeaning(possible_match, data)
 
         elif confirm.lower() == "n":
-            result = "%s doesn't exist in our DB?" % word
+            result = "%s doesn't exist in our DB?\n\n" % word
 
         else:
-            result = "Query not clear"
+            result = "Query not clear\n\n"
+
+    elif word == "":
+        result = "You entered nothing\n\n"
 
     else:
         result = "%s doesn't exist in our DB?\n\n" % word
 
     return result
 
-#accept input from user
+
+######################################################################################
+"""Intro to run app"""
+
+print("***Welcome to interactive dictionary***\nSimply enter a word you'd like to look up and get the meaning or translation!\n\n\n")
+
+#Persist input from user
 while valuePassed != 1:
     query = raw_input("Enter word: ")
     #make query case insensitive
