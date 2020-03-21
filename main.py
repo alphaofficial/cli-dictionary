@@ -22,6 +22,8 @@ def getDefinition(word):
 
 #accept input from user
 query = raw_input("Enter word: ")
+#make query case insensitive
+query = query.lower()
 
 #print input
 print(getDefinition(query))
