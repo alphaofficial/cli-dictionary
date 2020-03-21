@@ -8,30 +8,51 @@ import difflib
 #load dict json
 data = json.load(open("data.json"))
 
+#how i intend to keep the app running
+valuePassed = 0
+
+#funtion to return translation
+def multipleTrans(word, data,):
+    index = 1
+    result = ""
+    for meaning in data[word]:
+        result += "%s %s: %s \n" % (word, str(index), meaning)
+        index = index + 1
+    return result
+
 #function to lookup a word in the dict
 def getDefinition(word):
     result = ""
-    index = 1
     if word in data:
         if len(data[word]) > 1:
-            for meaning in data[word]:
-                result += "Result "+ str(index) +": " + meaning + "\n"
-                index = index + 1
+            result = multipleTrans(word, data)
         else:
-            result = data[word]
-    else:
-        #find matches in DB
-        #get_close_matches will return matches in order of similarity. So obviously first word is a possible match
+            result = "%s: %s" % (word, data[word][0])
+
+    elif len(difflib.get_close_matches(word, data.keys())) > 0:
+        #get_close_matches will return matches in order of similarity. So obviously, the first word is a possible match
         possible_match = difflib.get_close_matches(word, data.keys())[0]
+        confirm = raw_input("Did you mean %s? Enter Y for yes and N for no:\n" % possible_match)
         
-        result = word + " doesn't exist in our DB. Did you mean " + possible_match + "?"
+        if confirm.lower() == "y":
+            result =  multipleTrans(possible_match, data)
+
+        elif confirm.lower() == "n":
+            result = "%s doesn't exist in our DB?" % word
+
+        else:
+            result = "Query not clear"
+
+    else:
+        result = "%s doesn't exist in our DB?\n\n" % word
 
     return result
 
 #accept input from user
-query = raw_input("Enter word: ")
-#make query case insensitive
-query = query.lower()
+while valuePassed != 1:
+    query = raw_input("Enter word: ")
+    #make query case insensitive
+    query = query.lower()
 
-#print input
-print(getDefinition(query))
+    #print input
+    print(getDefinition(query))
