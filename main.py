@@ -7,8 +7,6 @@ import difflib
 #load dict json
 data = json.load(open("data.json"))
 
-#how i intend to keep the app running
-valuePassed = 0
 
 #funtion to return translation
 def getMeaning(word, data,):
@@ -28,7 +26,7 @@ def getDefinition(word):
     elif len(difflib.get_close_matches(word, data.keys())) > 0:
         #get_close_matches will return matches in order of similarity. So obviously, the first word is a possible match
         possible_match = difflib.get_close_matches(word, data.keys())[0]
-        confirm = raw_input("Did you mean %s? Enter Y for yes and N for no:\n\n" % possible_match)
+        confirm = input("Did you mean %s? Enter Y for yes and N for no:\n\n" % possible_match)
         
         if confirm.lower() == "y":
             result =  getMeaning(possible_match, data)
@@ -54,8 +52,8 @@ def getDefinition(word):
 print("***Welcome to interactive dictionary***\nSimply enter a word you'd like to look up and get the meaning or translation!\n\n\n")
 
 #Persist input from user
-while valuePassed != 1:
-    query = raw_input("Enter word: ")
+while True:
+    query = input("Enter word: ")
     #make query case insensitive
     query = query.lower()
 
